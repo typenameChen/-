@@ -1,0 +1,55 @@
+//将QSqlQuery对象作为数据成员使用时出现QSqlQuery::exec: database not open错误，以下为出错代码：
+Widget::Widget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::Widget)
+{
+    ui->setupUi(this);
+    db=QSqlDatabase::addDatabase("QMYSQL");
+    db.setUserName("root");
+    db.setPassword("123456");
+    db.setDatabaseName("choose");
+    if(!db.open())
+        qDebug()<<db.lastError();
+    else
+        qDebug()<<"mysql opened success";
+
+    query.exec("select*from student");
+}
+
+//解决方法：
+Widget::Widget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::Widget)
+{
+    ui->setupUi(this);
+    db=QSqlDatabase::addDatabase("QMYSQL");
+    db.setUserName("root");
+    db.setPassword("123456");
+    db.setDatabaseName("choose");
+    if(!db.open())
+        qDebug()<<db.lastError();
+    else
+        qDebug()<<"mysql opened success";
+
+    query=QSqlQuery(db);
+    query.exec("select*from student");
+}
+//或者
+Widget::Widget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::Widget)
+{
+    ui->setupUi(this);
+    db=QSqlDatabase::addDatabase("QMYSQL");
+    db.setUserName("root");
+    db.setPassword("123456");
+    db.setDatabaseName("choose");
+    if(!db.open())
+        qDebug()<<db.lastError();
+    else
+        qDebug()<<"mysql opened success";
+
+    QSqlQuery q;
+    q.exec("select*from student");
+}
+//原因可能和QSqlQuery的绑定机制有关，暂不清楚
