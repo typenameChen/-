@@ -52,4 +52,5 @@ Widget::Widget(QWidget *parent) :
     QSqlQuery q;
     q.exec("select*from student");
 }
+//以上添加的代码必须在数据库连接之后
 //原因可能和QSqlQuery的绑定机制有关，暂不清楚
